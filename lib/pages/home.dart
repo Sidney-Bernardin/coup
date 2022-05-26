@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:coup/theme.dart';
 import 'package:coup/constants.dart';
 import 'package:coup/widgets/influence_card.dart';
+import 'package:coup/widgets/button_card.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,7 +20,13 @@ class _HomePageState extends State<HomePage> {
             flex: 2,
             child: Container(
               color: Colors.black12,
-              child: Center(child: InfluenceCard(InfluenceCardInfo.duke)),
+              child: Center(
+                child: SizedBox(
+                  width: MyCardTheme.width,
+                  height: MyCardTheme.height,
+                  child: ButtonCard('Host Game', () {}),
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -33,7 +41,13 @@ class _HomePageState extends State<HomePage> {
             flex: 2,
             child: Container(
               color: Colors.black12,
-              child: Center(child: InfluenceCard(InfluenceCardInfo.ambassador)),
+              child: Center(
+                child: SizedBox(
+                  width: MyCardTheme.width,
+                  height: MyCardTheme.height,
+                  child: InfluenceCard(InfluenceCardInfo.captain),
+                ),
+              ),
             ),
           ),
         ],
