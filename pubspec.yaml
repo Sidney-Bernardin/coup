@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_spinkit: ^5.1.0
   flip_card: ^0.6.0
+  uuid: ^3.0.6
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +63,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -75,9 +77,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Frijole
+    - family: SecularOne
       fonts:
-        - asset: fonts/Frijole-Regular.ttf
+        - asset: assets/fonts/SecularOne-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
