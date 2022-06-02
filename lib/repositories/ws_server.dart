@@ -5,6 +5,8 @@ import 'dart:typed_data';
 
 import 'package:uuid/uuid.dart' as uuid;
 
+import 'ws_client.dart' as ws_client;
+
 class Client {
   String id;
   Socket clientSocket;
@@ -12,25 +14,29 @@ class Client {
   Client(this.id, this.clientSocket);
 }
 
-class Payload {
+class OutboundPayload {
   String handler;
-  Map<String, dynamic> info;
+  Map newGameState;
 
-  Payload({required this.handler, required this.info});
+  OutboundPayload({
+    required this.handler,
+    required this.newGameState,
+  });
 
-  Payload.fromJson(Map<String, dynamic> json)
+  OutboundPayload.fromJson(Map<String, dynamic> json)
       : handler = json['handler'],
-        info = json['info'];
+        newGameState = json['new_game_state'];
 }
 
-class WebSocketRepository {
+class Repository {
   ServerSocket? _serverSocket;
   Map<String, Client> clientSockets = {};
 
-  final StreamController<Payload> payloadStream = StreamController<Payload>();
+  final StreamController<ws_client.OutboundPayload> payloadStream =
+      StreamController<ws_client.OutboundPayload>();
 
-  void listen(String address, int port) async {
-    _serverSocket = await ServerSocket.bind(address, port);
+  listen(String address, int port) async {
+    _serverSocket = await ServerSocket.bind(address, port, shared: true);
     if (_serverSocket == null) return;
 
     _serverSocket?.listen((Socket socket) {
@@ -41,13 +47,14 @@ class WebSocketRepository {
 
       socket.listen((Uint8List data) {
         Map<String, dynamic> payloadMap = jsonDecode(data.toString());
-        Payload payload = Payload.fromJson(payloadMap);
+        ws_client.OutboundPayload payload =
+            ws_client.OutboundPayload.fromJson(payloadMap);
         payloadStream.add(payload);
       });
     });
   }
 
-  void broadcast(Payload payload) {
+  void broadcast(OutboundPayload payload) {
     clientSockets.forEach((key, value) {
       value.clientSocket.write(payload);
     });

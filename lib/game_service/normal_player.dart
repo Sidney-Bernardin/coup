@@ -1,42 +1,38 @@
-import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
+import 'package:flutter/material.dart';
 
-import 'influence.dart';
-import 'models.dart';
+import 'player.dart' as player;
+import '../repositories/ws_server.dart' as ws_server;
+import '../repositories/ws_client.dart' as ws_client;
 
-class Player {
-  Socket? socket;
+class NormalPlayer extends ChangeNotifier implements player.Player {
+  String name = '';
+  ws_client.Repository webSocketRepo = ws_client.Repository();
 
-  String name;
-  Influence influenceA = Influence.ambassador;
-  Influence influenceB = Influence.assassin;
+  @override
+  Map gameState = {};
 
-  void Function(int) onUpdateTreasury;
-
-  Player(this.name, {required this.onUpdateTreasury});
-
-  void onError() {}
-
-  void onDone() {}
-
-  void connect(String host, int port) async {
-    socket = await Socket.connect(host, port);
-    socket?.listen(
-      onData,
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: false,
-    );
+  NormalPlayer(this.name) {
+    webSocketRepo.payloadStream.stream.listen(_processPayload);
   }
 
-  void onData(Uint8List data) {
-    Map<String, dynamic> payloadMap = jsonDecode(data.toString());
-    Payload payload = Payload.fromJson(payloadMap);
+  start() async {
+    await webSocketRepo.connect('0.0.0.0', 4040);
+  }
 
+  void _processPayload(ws_server.OutboundPayload payload) {
     switch (payload.handler) {
-      case "update_treasury":
-        onUpdateTreasury(payload.info['new_treasury']);
+      case "new_game_state":
+        gameState = payload.newGameState;
+        notifyListeners();
     }
+  }
+
+  @override
+  void addToTreasury(int x) {
+    webSocketRepo.send(ws_client.OutboundPayload(
+      name: name,
+      handler: 'add_to_treasury',
+      addToTreasury: x,
+    ));
   }
 }

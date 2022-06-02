@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Middle extends StatefulWidget {
-  int treasury;
+import 'package:provider/provider.dart' as provider;
 
-  Middle(this.treasury, {Key? key}) : super(key: key);
+import '../../game_service/player.dart' as player;
+import '../../game_service/host_player.dart' as host_player;
+import '../../game_service/normal_player.dart' as normal_player;
 
-  @override
-  _MiddleState createState() => _MiddleState();
-}
-
-class _MiddleState extends State<Middle> {
+class Middle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    host_player.HostPlayer? hostPlayer =
+        provider.Provider.of<host_player.HostPlayer?>(context);
+    normal_player.NormalPlayer? normalPlayer =
+        provider.Provider.of<normal_player.NormalPlayer?>(context);
+
+    player.Player? p = hostPlayer ?? normalPlayer;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -21,7 +25,7 @@ class _MiddleState extends State<Middle> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Treasury: ${widget.treasury}',
+                  "Treasury: ${p?.gameState['treasury']}",
                   style: TextStyle(
                     color: Colors.grey.shade700,
                   ),
@@ -31,7 +35,9 @@ class _MiddleState extends State<Middle> {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            p?.addToTreasury(2);
+          },
           icon: const Icon(Icons.autorenew),
           color: Colors.black,
         ),

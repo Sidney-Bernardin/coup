@@ -21,7 +21,7 @@ class InfluenceCard extends StatelessWidget {
           direction: FlipDirection.HORIZONTAL,
           speed: 250,
           onFlipDone: (status) {},
-          front: Container(
+          back: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               border: Border.all(width: 5, color: Colors.black45),
@@ -78,7 +78,7 @@ class InfluenceCard extends StatelessWidget {
               ],
             ),
           ),
-          back: Container(
+          front: Container(
             decoration: BoxDecoration(
               border: Border.all(width: 5, color: Colors.white70),
               borderRadius: const BorderRadius.all(Radius.circular(15)),

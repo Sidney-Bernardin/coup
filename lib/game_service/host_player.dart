@@ -1,37 +1,39 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
 
-import '../websocket_repository/websocket_repository.dart'
-    as websocket_repository;
+import 'player.dart' as player;
+import '../repositories/ws_server.dart' as ws_server;
+import '../repositories/ws_client.dart' as ws_client;
 
-class HostPlayer {
-  websocket_repository.WebSocketRepository webSocketRepo =
-      websocket_repository.WebSocketRepository();
+class HostPlayer extends ChangeNotifier implements player.Player {
+  ws_server.Repository webSocketRepo = ws_server.Repository();
 
-  int treasury = 30;
-
-  final StreamController<int> updateTreasuryStream = StreamController<int>();
+  @override
+  Map gameState = {
+    'treasury': 30,
+  };
 
   HostPlayer() {
-    webSocketRepo.payloadStream.stream.listen(processPayload);
+    webSocketRepo.payloadStream.stream.listen(_processPayload);
   }
 
-  void start() {
-    webSocketRepo.listen('0.0.0.0', 4040);
+  start() async {
+    await webSocketRepo.listen('0.0.0.0', 4040);
   }
 
-  void processPayload(websocket_repository.Payload payload) {
+  void _processPayload(ws_client.OutboundPayload payload) {
     switch (payload.handler) {
       case 'add_to_treasury':
-        addToTreasury(payload.info['add_to_treasury']);
+        addToTreasury(payload.addToTreasury);
     }
   }
 
-  void addToTreasury(int x) {
-    treasury += x;
-    updateTreasuryStream.add(treasury);
-    webSocketRepo.broadcast(websocket_repository.Payload(
-      handler: 'new_treasury',
-      info: {'new_treasury': treasury},
+  @override
+  addToTreasury(int x) {
+    gameState['treasury'] += x;
+    notifyListeners();
+    webSocketRepo.broadcast(ws_server.OutboundPayload(
+      handler: 'new_game_state',
+      newGameState: gameState,
     ));
   }
 }
