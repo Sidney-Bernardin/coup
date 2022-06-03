@@ -16,40 +16,57 @@ class Middle extends StatelessWidget {
 
     player.Player? p = hostPlayer ?? normalPlayer;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Treasury: ${p?.gameState['treasury']}",
-                  style: TextStyle(
-                    color: Colors.grey.shade700,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 3, color: Colors.white10.withAlpha(80)),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withAlpha(100),
+            blurRadius: 10.0,
+            spreadRadius: 0.0,
+          ),
+        ],
+        color: Colors.white.withOpacity(0.2),
+      ),
+      height: 174 * 1.7,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${p?.gameState['treasury']}",
+                    style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: 24,
+                      fontFamily: 'SecularOne',
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        IconButton(
-          onPressed: () {
-            p?.addToTreasury(2);
-          },
-          icon: const Icon(Icons.autorenew),
-          color: Colors.black,
-        ),
-        Expanded(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [],
+          IconButton(
+            onPressed: () {
+              p?.addToTreasury(2);
+            },
+            icon: const Icon(Icons.autorenew),
+            color: Colors.grey.shade200,
+          ),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

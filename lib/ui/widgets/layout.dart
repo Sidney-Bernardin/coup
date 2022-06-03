@@ -18,20 +18,8 @@ class Layout extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Colors.grey.shade500,
-                  Colors.grey.shade100,
-                ],
-              ),
-            ),
-            child: Center(
-              child: left,
-            ),
+          child: Center(
+            child: left,
           ),
         ),
         Expanded(
@@ -40,20 +28,8 @@ class Layout extends StatelessWidget {
         ),
         Expanded(
           flex: 2,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.grey.shade500,
-                  Colors.grey.shade100,
-                ],
-              ),
-            ),
-            child: Center(
-              child: right,
-            ),
+          child: Center(
+            child: right,
           ),
         ),
       ],

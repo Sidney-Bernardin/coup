@@ -15,7 +15,6 @@ class InfluenceCard extends StatelessWidget {
       width: 145 * 1.7,
       height: 174 * 1.7,
       child: Card(
-        elevation: 20,
         color: const Color(0x000000),
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
@@ -45,6 +44,7 @@ class InfluenceCard extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
+                      fontFamily: 'SecularOne',
                     ),
                   ),
                 ),
@@ -62,6 +62,7 @@ class InfluenceCard extends StatelessWidget {
                         currentInfluence.effect,
                         style: const TextStyle(
                           fontSize: 15,
+                          fontFamily: 'SecularOne',
                           color: Colors.white,
                         ),
                       ),
@@ -69,6 +70,7 @@ class InfluenceCard extends StatelessWidget {
                         currentInfluence.counteraction,
                         style: const TextStyle(
                           fontSize: 12.5,
+                          fontFamily: 'SecularOne',
                           color: Colors.white70,
                         ),
                       )
@@ -82,7 +84,7 @@ class InfluenceCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(width: 5, color: Colors.white70),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage("assets/images/back.png"),
                 fit: BoxFit.fill,
               ),

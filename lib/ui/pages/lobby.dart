@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart' as provider;
 
+import '../widgets/background.dart' as background;
 import '../widgets/layout.dart' as layout;
 import '../widgets/influence_card.dart' as influence_card;
 import '../widgets/middle.dart' as middle;
@@ -13,7 +14,6 @@ class LobbyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
-    print(args);
 
     return provider.MultiProvider(
       providers: [
@@ -25,15 +25,22 @@ class LobbyPage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        body: layout.Layout(
-          left: influence_card.InfluenceCard(
-            influence.Influence.duke,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
-          right: influence_card.InfluenceCard(
-            influence.Influence.captain,
+          child: layout.Layout(
+            left: influence_card.InfluenceCard(
+              influence.Influence.duke,
+            ),
+            right: influence_card.InfluenceCard(
+              influence.Influence.captain,
+            ),
+            middle: middle.Middle(),
           ),
-          middle: middle.Middle(),
         ),
       ),
     );

@@ -16,32 +16,30 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Ink.image(
-        image: const AssetImage('assets/images/contessa.png'),
-        colorFilter: const ColorFilter.matrix(ColorFilters.greyScale),
-        fit: BoxFit.cover,
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 3, color: Colors.white10.withAlpha(80)),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withAlpha(100),
+              blurRadius: 10.0,
+              spreadRadius: 0.0,
+            ),
+          ],
+          color: Colors.white.withOpacity(0.2),
+        ),
         width: 145 * 1.7,
         height: 174 * 1.7,
-        child: InkWell(
-          onTap: onClick,
-          child: ClipRRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.grey.withOpacity(0.1),
-                alignment: Alignment.center,
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.grey.shade200,
+              fontSize: 30,
+              fontFamily: 'SecularOne',
             ),
           ),
         ),

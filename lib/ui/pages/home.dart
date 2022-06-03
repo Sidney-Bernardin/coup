@@ -14,25 +14,32 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Layout(
-        left: PrimaryButton(
-          'Host Game',
-          onClick: () {
-            Navigator.pushReplacementNamed(context, '/lobby', arguments: {
-              'host': host_player.HostPlayer(),
-            });
-          },
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
-        right: PrimaryButton(
-          'Join Game',
-          onClick: () {
-            Navigator.pushReplacementNamed(context, '/lobby', arguments: {
-              'not_host': normal_player.NormalPlayer('sidney'),
-            });
-          },
+        child: Layout(
+          left: PrimaryButton(
+            'Host Game',
+            onClick: () {
+              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
+                'host': host_player.HostPlayer(),
+              });
+            },
+          ),
+          right: PrimaryButton(
+            'Join Game',
+            onClick: () {
+              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
+                'not_host': normal_player.NormalPlayer('sidney'),
+              });
+            },
+          ),
+          middle: const Card(),
         ),
-        middle: const Card(),
       ),
     );
   }
