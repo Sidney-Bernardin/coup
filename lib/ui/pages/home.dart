@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
             'Host Game',
             onClick: () {
               Navigator.pushReplacementNamed(context, '/lobby', arguments: {
-                'host': host_player.HostPlayer(),
+                'host': host_player.HostPlayer('sidney'),
               });
             },
           ),

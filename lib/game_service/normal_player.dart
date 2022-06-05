@@ -9,7 +9,9 @@ class NormalPlayer extends ChangeNotifier implements player.Player {
   ws_client.Repository webSocketRepo = ws_client.Repository();
 
   @override
-  Map gameState = {};
+  Map gameState = {
+    'players': [],
+  };
 
   NormalPlayer(this.name) {
     webSocketRepo.payloadStream.stream.listen(_processPayload);
@@ -17,6 +19,10 @@ class NormalPlayer extends ChangeNotifier implements player.Player {
 
   start() async {
     await webSocketRepo.connect('0.0.0.0', 4040);
+    webSocketRepo.send(ws_client.OutboundPayload(
+      name: name,
+      handler: 'introduce',
+    ));
   }
 
   void _processPayload(ws_server.OutboundPayload payload) {

@@ -7,13 +7,6 @@ import 'package:uuid/uuid.dart' as uuid;
 
 import 'ws_client.dart' as ws_client;
 
-class Client {
-  String id;
-  Socket clientSocket;
-
-  Client(this.id, this.clientSocket);
-}
-
 class OutboundPayload {
   String handler;
   Map newGameState;
@@ -30,7 +23,7 @@ class OutboundPayload {
 
 class Repository {
   ServerSocket? _serverSocket;
-  Map<String, Client> clientSockets = {};
+  List<Socket> clientSockets = [];
 
   final StreamController<ws_client.OutboundPayload> payloadStream =
       StreamController<ws_client.OutboundPayload>();
@@ -40,9 +33,8 @@ class Repository {
     if (_serverSocket == null) return;
 
     _serverSocket?.listen((Socket socket) {
-      if (!clientSockets.containsValue(socket)) {
-        String id = const uuid.Uuid().v4();
-        clientSockets[id] = Client(id, socket);
+      if (!clientSockets.contains(socket)) {
+        clientSockets.add(socket);
       }
 
       socket.listen((Uint8List data) {
@@ -55,8 +47,8 @@ class Repository {
   }
 
   void broadcast(OutboundPayload payload) {
-    clientSockets.forEach((key, value) {
-      value.clientSocket.write(payload);
-    });
+    for (Socket s in clientSockets) {
+      s.write(payload);
+    }
   }
 }

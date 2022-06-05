@@ -1,6 +1,6 @@
-import 'dart:io';
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'ws_server.dart' as ws_server;
@@ -13,7 +13,7 @@ class OutboundPayload {
   OutboundPayload({
     required this.name,
     required this.handler,
-    required this.addToTreasury,
+    this.addToTreasury = 0,
   });
 
   OutboundPayload.fromJson(Map<String, dynamic> json)

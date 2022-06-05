@@ -51,9 +51,7 @@ class Middle extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {
-              p?.addToTreasury(2);
-            },
+            onPressed: () => p?.addToTreasury(2),
             icon: const Icon(Icons.autorenew),
             color: Colors.grey.shade200,
           ),
