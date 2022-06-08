@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:network_info_plus/network_info_plus.dart' as network_info_plus;
+
 import 'player.dart' as player;
 import 'influence.dart' as influence;
 import '../repositories/ws_server.dart' as ws_server;
@@ -8,6 +10,7 @@ import '../repositories/ws_client.dart' as ws_client;
 class HostPlayer extends ChangeNotifier implements player.Player {
   ws_server.Repository webSocketRepo = ws_server.Repository();
 
+  @override
   String name;
 
   @override
@@ -28,8 +31,17 @@ class HostPlayer extends ChangeNotifier implements player.Player {
     webSocketRepo.payloadStream.stream.listen(_processPayload);
   }
 
+  @override
   start() async {
-    await webSocketRepo.listen('0.0.0.0', 4040);
+    String? ip;
+    try {
+      ip = await network_info_plus.NetworkInfo().getWifiIP();
+      print(ip ?? 'its null');
+    } catch (e) {
+      print('error' + e.toString());
+    }
+    await webSocketRepo.listen(ip!, 4040);
+    print('listened');
   }
 
   _processPayload(ws_client.OutboundPayload payload) {

@@ -38,10 +38,14 @@ class Repository {
       }
 
       socket.listen((Uint8List data) {
+        String s = String.fromCharCodes(data);
+        print(s);
+        /*
         Map<String, dynamic> payloadMap = jsonDecode(data.toString());
         ws_client.OutboundPayload payload =
             ws_client.OutboundPayload.fromJson(payloadMap);
         payloadStream.add(payload);
+        */
       });
     });
   }
