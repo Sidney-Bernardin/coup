@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:network_info_plus/network_info_plus.dart' as network_info_plus;
-
 import 'player.dart' as player;
 import 'influence.dart' as influence;
 import '../repositories/ws_server.dart' as ws_server;
-import '../repositories/ws_client.dart' as ws_client;
 
 class HostPlayer extends ChangeNotifier implements player.Player {
   ws_server.Repository webSocketRepo = ws_server.Repository();
@@ -22,9 +19,9 @@ class HostPlayer extends ChangeNotifier implements player.Player {
 
   HostPlayer(this.name) {
     for (final s in influence.Influence.values) {
-      gameState['court_deak'].add(s);
-      gameState['court_deak'].add(s);
-      gameState['court_deak'].add(s);
+      gameState['court_deak'].add(s.index);
+      gameState['court_deak'].add(s.index);
+      gameState['court_deak'].add(s.index);
     }
     shuffle();
     introduce(name);
@@ -32,29 +29,24 @@ class HostPlayer extends ChangeNotifier implements player.Player {
   }
 
   @override
-  start() async {
-    String? ip;
-    try {
-      ip = await network_info_plus.NetworkInfo().getWifiIP();
-      print(ip ?? 'its null');
-    } catch (e) {
-      print('error' + e.toString());
-    }
-    await webSocketRepo.listen(ip!, 4040);
-    print('listened');
+  Future start() async {
+    webSocketRepo.listenAndServe();
   }
 
-  _processPayload(ws_client.OutboundPayload payload) {
-    switch (payload.handler) {
+  _processPayload(Map<String, dynamic> payload) {
+    switch (payload['handler']) {
       case 'introduce':
-        introduce(payload.name);
-        return;
+        introduce(payload['name']);
+        break;
       case 'add_to_treasury':
-        addToTreasury(payload.addToTreasury);
-        return;
+        addToTreasury(payload['add_to_treasury']);
+        break;
       default:
-        print("Handler '${payload.handler}' is not valid.");
+        print("Handler '${payload['handler']}' is not valid.");
     }
+
+    print("handled ${payload['handler']}");
+    print(gameState);
   }
 
   shuffle() {
@@ -64,23 +56,24 @@ class HostPlayer extends ChangeNotifier implements player.Player {
   }
 
   influence.Influence deal() {
-    influence.Influence ret = gameState['court_deak'][0];
+    influence.Influence ret =
+        influence.Influence.values[gameState['court_deak'][0]];
     gameState['court_deak'].removeAt(0);
     return ret;
   }
 
   updateAndBroadcastGameState() {
     notifyListeners();
-    webSocketRepo.broadcast(ws_server.OutboundPayload(
-      handler: 'new_game_state',
-      newGameState: gameState,
-    ));
+    webSocketRepo.broadcast({
+      'handler': 'new_game_state',
+      'new_game_state': gameState,
+    });
   }
 
   introduce(String name) {
     gameState['players'][name] = {
-      'a': deal(),
-      'b': deal(),
+      'a': deal().index,
+      'b': deal().index,
     };
     updateAndBroadcastGameState();
   }

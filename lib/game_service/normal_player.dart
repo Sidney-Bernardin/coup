@@ -29,26 +29,26 @@ class NormalPlayer extends ChangeNotifier implements player.Player {
   @override
   start() async {
     await webSocketRepo.connect('0.0.0.0', 4040);
-    webSocketRepo.send(ws_client.OutboundPayload(
-      name: name,
-      handler: 'introduce',
-    ));
+    webSocketRepo.send({
+      'name': name,
+      'handler': 'introduce',
+    });
   }
 
-  void _processPayload(ws_server.OutboundPayload payload) {
-    switch (payload.handler) {
-      case "new_game_state":
-        gameState = payload.newGameState;
+  void _processPayload(Map<String, dynamic> payload) {
+    switch (payload['handler']) {
+      case 'new_game_state':
+        gameState = payload['new_game_state'];
         notifyListeners();
     }
   }
 
   @override
   void addToTreasury(int x) {
-    webSocketRepo.send(ws_client.OutboundPayload(
-      name: name,
-      handler: 'add_to_treasury',
-      addToTreasury: x,
-    ));
+    webSocketRepo.send({
+      'name': name,
+      'handler': 'add_to_treasury',
+      'add_to_treasury': x,
+    });
   }
 }

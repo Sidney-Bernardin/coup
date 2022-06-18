@@ -1,58 +1,41 @@
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:uuid/uuid.dart' as uuid;
+import 'package:network_info_plus/network_info_plus.dart' as network_info_plus;
 
-import 'ws_client.dart' as ws_client;
-
-class OutboundPayload {
-  String handler;
-  Map newGameState;
-
-  OutboundPayload({
-    required this.handler,
-    required this.newGameState,
-  });
-
-  OutboundPayload.fromJson(Map<String, dynamic> json)
-      : handler = json['handler'],
-        newGameState = json['new_game_state'];
-}
+import 'package:shelf/shelf_io.dart' as shelf_io;
+import 'package:shelf_web_socket/shelf_web_socket.dart' as shelf_web_socket;
+import 'package:web_socket_channel/web_socket_channel.dart'
+    as web_socket_channel;
 
 class Repository {
-  ServerSocket? _serverSocket;
-  List<Socket> clientSockets = [];
+  List<web_socket_channel.WebSocketChannel> clientSockets = [];
 
-  final StreamController<ws_client.OutboundPayload> payloadStream =
-      StreamController<ws_client.OutboundPayload>();
+  final StreamController<Map<String, dynamic>> payloadStream =
+      StreamController<Map<String, dynamic>>();
 
-  listen(String address, int port) async {
-    _serverSocket = await ServerSocket.bind(address, port, shared: true);
-    if (_serverSocket == null) return;
-
-    _serverSocket?.listen((Socket socket) {
-      if (!clientSockets.contains(socket)) {
-        clientSockets.add(socket);
+  listenAndServe() async {
+    var handler = shelf_web_socket.webSocketHandler((ws) {
+      if (!clientSockets.contains(ws)) {
+        clientSockets.add(ws);
       }
 
-      socket.listen((Uint8List data) {
-        String s = String.fromCharCodes(data);
-        print(s);
-        /*
-        Map<String, dynamic> payloadMap = jsonDecode(data.toString());
-        ws_client.OutboundPayload payload =
-            ws_client.OutboundPayload.fromJson(payloadMap);
+      ws.stream.listen((payloadStr) {
+        Map<String, dynamic> payload = jsonDecode(payloadStr);
         payloadStream.add(payload);
-        */
       });
+    });
+
+    String? ip = await network_info_plus.NetworkInfo().getWifiIP();
+
+    shelf_io.serve(handler, ip!, 4040).then((srv) {
+      print('Serving at ws://${srv.address.host}:${srv.port}');
     });
   }
 
-  void broadcast(OutboundPayload payload) {
-    for (Socket s in clientSockets) {
-      s.write(payload);
+  void broadcast(Map<String, dynamic> payload) {
+    for (web_socket_channel.WebSocketChannel s in clientSockets) {
+      s.sink.add(jsonEncode(payload));
     }
   }
 }

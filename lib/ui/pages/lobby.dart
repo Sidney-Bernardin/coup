@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_spinkit/flutter_spinkit.dart' as flutter_spinkit;
 import 'package:provider/provider.dart' as provider;
 
-import '../widgets/layout.dart' as layout;
-import '../widgets/influence_card.dart' as influence_card;
-import '../widgets/middle.dart' as middle;
-import '../../game_service/player.dart' as player;
+import '../../game_service/influence.dart' as influence;
 import '../../game_service/host_player.dart' as host_player;
 import '../../game_service/normal_player.dart' as normal_player;
+import '../../game_service/player.dart' as player;
+import '../widgets/influence_card.dart' as influence_card;
+import '../widgets/layout.dart' as layout;
+import '../widgets/middle.dart' as middle;
 
 class LobbyPage extends StatelessWidget {
   const LobbyPage({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class LobbyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)?.settings.arguments as Map;
     player.Player p = args['host'] ?? args['not_host'];
+    p.start();
 
     return provider.MultiProvider(
       providers: [
@@ -35,35 +36,22 @@ class LobbyPage extends StatelessWidget {
           return false;
         },
         child: Scaffold(
-          body: FutureBuilder(
-            future: p.start(),
-            builder: (context, snapshot) {
-              //print(snapshot);
-              if (!snapshot.hasData) {
-                return Center(
-                  child: flutter_spinkit.SpinKitSpinningLines(
-                    color: Colors.grey,
-                  ),
-                );
-              } else {
-                print('else');
-                return Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/bg.jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: layout.Layout(
-                    left: influence_card.InfluenceCard(
-                        p.gameState['players'][p.name]['a']),
-                    right: influence_card.InfluenceCard(
-                        p.gameState['players'][p.name]['b']),
-                    middle: middle.Middle(),
-                  ),
-                );
-              }
-            },
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bg.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: layout.Layout(
+              left: influence_card.InfluenceCard(
+                influence.Influence.values[p.gameState['players'][p.name]['a']],
+              ),
+              right: influence_card.InfluenceCard(
+                influence.Influence.values[p.gameState['players'][p.name]['b']],
+              ),
+              middle: middle.Middle(),
+            ),
           ),
         ),
       ),
