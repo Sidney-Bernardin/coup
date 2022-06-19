@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'player.dart' as player;
 import 'influence.dart' as influence;
+import 'models.dart' as models;
 import '../repositories/ws_server.dart' as ws_server;
 
 class HostPlayer extends ChangeNotifier implements player.Player {
@@ -11,7 +14,7 @@ class HostPlayer extends ChangeNotifier implements player.Player {
   String name;
 
   @override
-  Map gameState = {
+  Map<String, dynamic> gameState = {
     'players': {},
     'treasury': 30,
     'court_deak': [],
@@ -34,12 +37,15 @@ class HostPlayer extends ChangeNotifier implements player.Player {
   }
 
   _processPayload(Map<String, dynamic> payload) {
-    switch (payload['handler']) {
-      case 'introduce':
-        introduce(payload['name']);
+    //payload['handler'] = int.parse(payload['handler']);
+    models.PlayerToHost model = models.PlayerToHost.fromMap(payload);
+
+    switch (model.handler) {
+      case models.PlayerToHostHandler.introduce:
+        introduce(model.name);
         break;
-      case 'add_to_treasury':
-        addToTreasury(payload['add_to_treasury']);
+      case models.PlayerToHostHandler.addToTreasury:
+        addToTreasury(model.addToTreasury);
         break;
       default:
         print("Handler '${payload['handler']}' is not valid.");
@@ -64,13 +70,14 @@ class HostPlayer extends ChangeNotifier implements player.Player {
 
   updateAndBroadcastGameState() {
     notifyListeners();
-    webSocketRepo.broadcast({
-      'handler': 'new_game_state',
-      'new_game_state': gameState,
-    });
+
+    webSocketRepo.broadcast(models.HostToPlayer(
+      handler: models.HostToPlayerHandler.newGameState,
+      newGameState: gameState,
+    ).toMap());
   }
 
-  introduce(String name) {
+  introduce(String? name) {
     gameState['players'][name] = {
       'a': deal().index,
       'b': deal().index,
@@ -79,7 +86,7 @@ class HostPlayer extends ChangeNotifier implements player.Player {
   }
 
   @override
-  addToTreasury(int x) {
+  addToTreasury(int? x) {
     gameState['treasury'] += x;
     updateAndBroadcastGameState();
   }

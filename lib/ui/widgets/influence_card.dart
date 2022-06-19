@@ -16,6 +16,7 @@ class InfluenceCard extends StatelessWidget {
       height: 174 * 1.7,
       child: Card(
         color: const Color(0x000000),
+        elevation: 30,
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
           speed: 250,

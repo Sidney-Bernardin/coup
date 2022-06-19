@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-import '../../utils/theme.dart';
-
-class PrimaryButton extends StatelessWidget {
+class PlayButton extends StatelessWidget {
   final String text;
   final void Function() onClick;
 
-  const PrimaryButton(
+  const PlayButton(
     this.text, {
     Key? key,
     required this.onClick,

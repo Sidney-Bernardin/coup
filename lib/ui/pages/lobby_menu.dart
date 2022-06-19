@@ -9,11 +9,8 @@ class LobbyMenuPage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg.jpg"),
-            fit: BoxFit.cover,
-          ),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade700,
         ),
         child: Row(
           children: [
@@ -49,13 +46,21 @@ class LobbyMenuPage extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemCount: args['players'].length,
                                 itemBuilder: (context, index) {
-                                  return Text(
-                                    'Player $index',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade200,
-                                      fontSize: 20,
-                                      fontFamily: 'SecularOne',
-                                    ),
+                                  return Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.grey.shade200,
+                                      ),
+                                      Text(
+                                        'Player',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade200,
+                                          fontSize: 20,
+                                          fontFamily: 'SecularOne',
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),

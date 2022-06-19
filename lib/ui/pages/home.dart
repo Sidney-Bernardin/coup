@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/layout.dart';
-import '../widgets/primary_button.dart';
+import '../widgets/layout.dart' as layout;
+import '../widgets/play_button.dart' as play_button;
 import '../../game_service/host_player.dart' as host_player;
 import '../../game_service/normal_player.dart' as normal_player;
 
@@ -15,14 +15,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg.jpg"),
-            fit: BoxFit.cover,
-          ),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade800,
         ),
-        child: Layout(
-          left: PrimaryButton(
+        child: layout.Layout(
+          left: play_button.PlayButton(
             'Host Game',
             onClick: () {
               Navigator.pushReplacementNamed(context, '/lobby', arguments: {
@@ -30,7 +27,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
           ),
-          right: PrimaryButton(
+          right: play_button.PlayButton(
             'Join Game',
             onClick: () {
               Navigator.pushReplacementNamed(context, '/lobby', arguments: {

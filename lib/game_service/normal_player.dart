@@ -12,7 +12,7 @@ class NormalPlayer extends ChangeNotifier implements player.Player {
   String name;
 
   @override
-  Map gameState = {
+  Map<String, dynamic> gameState = {
     'players': {},
     'treasury': 0,
     'court_deak': [],
