@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Button extends StatelessWidget {
-  Icon icon;
+import 'middle.dart' as middle;
 
-  Button(this.icon, {Key? key}) : super(key: key);
+import 'package:provider/provider.dart' as provider;
+
+class Basic extends StatelessWidget {
+  Icon icon;
+  Function onPressed;
+
+  Basic(this.icon, {Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,42 @@ class Button extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: IconButton(
-        onPressed: () {},
+        onPressed: onPressed(),
+        icon: icon,
+      ),
+    );
+  }
+}
+
+class ChangeToAdd extends StatelessWidget {
+  static const inc = 0;
+  static const dec = 1;
+
+  Icon icon;
+  int type;
+
+  ChangeToAdd(this.icon, this.type, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border.all(width: 1, color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: IconButton(
+        onPressed: () {
+          if (type == inc) {
+            provider.Provider.of<middle.ToAdd>(context, listen: false)
+                .increment();
+          } else if (type == dec) {
+            provider.Provider.of<middle.ToAdd>(context, listen: false)
+                .decrement();
+          }
+        },
         icon: icon,
       ),
     );
@@ -26,6 +66,8 @@ class Button extends StatelessWidget {
 class AddToTreasury extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    int toAdd = provider.Provider.of<middle.ToAdd>(context).count;
+
     return TextButton(
       style: ButtonStyle(
         shape: MaterialStateProperty.all(
@@ -41,7 +83,7 @@ class AddToTreasury extends StatelessWidget {
       ),
       onPressed: () {},
       child: Text(
-        'Add 7',
+        'Add $toAdd',
         style: TextStyle(
           color: Colors.grey.shade200,
           fontFamily: 'SecularOne',
