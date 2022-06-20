@@ -9,21 +9,21 @@ enum PlayerToHostHandler {
 
 class HostToPlayer {
   HostToPlayerHandler handler;
-  Map<String, dynamic>? newGameState;
+  Map? newGameState;
 
   HostToPlayer({
     required this.handler,
     this.newGameState,
   });
 
-  factory HostToPlayer.fromMap(Map<String, dynamic> map) {
+  factory HostToPlayer.fromMap(Map map) {
     return HostToPlayer(
       handler: HostToPlayerHandler.values[map['handler']],
       newGameState: map['new_game_state'],
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map toMap() {
     return {
       'handler': handler.index,
       'new_game_state': newGameState,
@@ -42,8 +42,7 @@ class PlayerToHost {
     this.addToTreasury,
   });
 
-  factory PlayerToHost.fromMap(Map<String, dynamic> map) {
-    print(map);
+  factory PlayerToHost.fromMap(Map map) {
     return PlayerToHost(
       handler: PlayerToHostHandler.values[map['handler']],
       name: map['name'],
@@ -51,7 +50,7 @@ class PlayerToHost {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map toMap() {
     return {
       'handler': handler.index,
       'name': name,

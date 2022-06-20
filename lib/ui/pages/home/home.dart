@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/layout.dart' as layout;
-import '../widgets/play_button/play_button.dart' as play_button;
+import '../../widgets/layout.dart' as layout;
+import '../../widgets/play_button/play_button.dart' as play_button;
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,17 +13,23 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.grey.shade700),
+        decoration: BoxDecoration(color: Colors.grey.shade800),
         child: layout.Layout(
           left: play_button.PlayButton(
             'Host Game',
-            onClick: () =>
-                Navigator.pushReplacementNamed(context, '/host_lobby'),
+            onClick: () {
+              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
+                'is_host': true,
+              });
+            },
           ),
           right: play_button.PlayButton(
             'Join Game',
-            onClick: () =>
-                Navigator.pushReplacementNamed(context, '/basic_lobby'),
+            onClick: () {
+              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
+                'is_host': false,
+              });
+            },
           ),
           middle: const Card(),
         ),

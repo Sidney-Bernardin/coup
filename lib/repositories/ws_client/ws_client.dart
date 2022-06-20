@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-class Repository {
+class WebSocketClient {
   Socket? socket;
 
   final StreamController<Map<String, dynamic>> payloadStream =

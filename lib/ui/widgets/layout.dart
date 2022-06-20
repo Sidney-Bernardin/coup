@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../data/influence.dart' as influence;
+
+import 'influence_card/influence_card.dart' as influence_card;
+
 class Layout extends StatelessWidget {
   final Widget left;
   final Widget right;

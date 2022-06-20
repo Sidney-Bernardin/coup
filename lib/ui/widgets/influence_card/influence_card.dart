@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flip_card/flip_card.dart';
 
-import '../../game_service/influence.dart' as influence;
+import '../../../data/influence.dart' as influence;
 
 class InfluenceCard extends StatelessWidget {
   influence.Influence currentInfluence;

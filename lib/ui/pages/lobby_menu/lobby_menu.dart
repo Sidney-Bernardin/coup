@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LobbyMenuPage extends StatelessWidget {
-  const LobbyMenuPage({Key? key}) : super(key: key);
+class LobbyMenu extends StatelessWidget {
+  const LobbyMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
