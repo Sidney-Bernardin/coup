@@ -8,7 +8,14 @@ import '../../styles.dart' as styles;
 
 import '../glass_icon_button/glass_icon_button.dart' as glass_icon_button;
 
-class LobbyMiddle extends StatelessWidget {
+class LobbyMiddle extends StatefulWidget {
+  @override
+  State<LobbyMiddle> createState() => _LobbyMiddleState();
+}
+
+class _LobbyMiddleState extends State<LobbyMiddle> {
+  bool exchanging = false;
+
   addToTreasury() {}
 
   @override
@@ -46,9 +53,39 @@ class LobbyMiddle extends StatelessWidget {
               ),
             ),
           ),
-          glass_icon_button.GlassIconButton(
-            onPressed: () {},
-            iconData: Icons.autorenew,
+          Visibility(
+            visible: !exchanging,
+            child: glass_icon_button.GlassIconButton(
+              onPressed: () {
+                player.handleStartExchange();
+                setState(() {
+                  exchanging = true;
+                });
+              },
+              iconData: Icons.autorenew,
+            ),
+          ),
+          Visibility(
+            visible: exchanging,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                glass_icon_button.GlassIconButton(
+                  onPressed: () => player.nextExchangeSet(),
+                  iconData: Icons.arrow_circle_right,
+                ),
+                Container(width: 15),
+                glass_icon_button.GlassIconButton(
+                  onPressed: () {
+                    player.handleConfirmExchange();
+                    setState(() {
+                      exchanging = false;
+                    });
+                  },
+                  iconData: Icons.done,
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: Center(

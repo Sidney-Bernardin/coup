@@ -39,12 +39,14 @@ class HostLobby extends StatelessWidget {
             backgroundColor: Colors.grey.shade700,
             body: layout.Layout(
               left: influence_card.InfluenceCard(
-                influence
-                    .Influence.values[host.gameState['players']['HOST']['a']],
+                influence.Influence.values[
+                    Provider.of<player_provider.PlayerProvider>(context)
+                        .gameState["players"]["HOST"]["a"]],
               ),
               right: influence_card.InfluenceCard(
-                influence
-                    .Influence.values[host.gameState['players']['HOST']['b']],
+                influence.Influence.values[
+                    Provider.of<player_provider.PlayerProvider>(context)
+                        .gameState["players"]["HOST"]["b"]],
               ),
               middle: lobby_middle.LobbyMiddle(),
             ),

@@ -22,6 +22,9 @@ class HostProvider
     'court_deak': [],
   };
 
+  int exchangeSetIndex = 0;
+  List<List> exchangingOptions = [];
+
   // webSocketServer is a repository for handling WebSocket connections.
   ws_server.WebSocketServer webSocketServer = ws_server.WebSocketServer();
 
@@ -44,6 +47,20 @@ class HostProvider
   start() async {
     // Start a WebSocket server.
     webSocketServer.listenAndServe();
+  }
+
+  @override
+  nextExchangeSet() {
+    if (exchangeSetIndex == 5) {
+      exchangeSetIndex = 0;
+    } else {
+      exchangeSetIndex++;
+    }
+
+    gameState['players'][name]['a'] = exchangingOptions[exchangeSetIndex][0];
+    gameState['players'][name]['b'] = exchangingOptions[exchangeSetIndex][1];
+
+    notifyListeners();
   }
 
   // Shuffles the deak.
@@ -84,6 +101,32 @@ class HostProvider
         'b': deal(),
       };
     }
+    update();
+  }
+
+  @override
+  handleStartExchange() {
+    int a = gameState['players'][name]['a'];
+    int b = gameState['players'][name]['b'];
+    int c = deal();
+    int d = deal();
+
+    exchangingOptions.add([a, b, c, d]);
+    exchangingOptions.add([c, d, a, b]);
+    exchangingOptions.add([a, c, b, d]);
+    exchangingOptions.add([a, d, c, b]);
+    exchangingOptions.add([b, c, d, a]);
+    exchangingOptions.add([b, d, c, a]);
+
+    nextExchangeSet();
+  }
+
+  @override
+  handleConfirmExchange() {
+    gameState['court_deak'].add(exchangingOptions[exchangeSetIndex][2]);
+    gameState['court_deak'].add(exchangingOptions[exchangeSetIndex][3]);
+    exchangeSetIndex = 0;
+    exchangingOptions = [];
     update();
   }
 }
