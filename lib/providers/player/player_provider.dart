@@ -8,7 +8,7 @@ abstract class PlayerProvider with ChangeNotifier {
 
   nextExchangeSet();
 
-  handleAddToTreasury(int x);
+  handleAddToTreasury(String name, int x);
   handleStartExchange();
   handleConfirmExchange();
 }

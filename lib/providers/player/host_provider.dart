@@ -88,8 +88,13 @@ class HostProvider
 
   // handleAddToTreasury increments the treasury by the given amount.
   @override
-  handleAddToTreasury(int val) {
+  handleAddToTreasury(String name, int val) {
     gameState['treasury'] += val;
+    if (val < 0) {
+      gameState['players'][name]['coins'] += val.abs();
+    } else {
+      gameState['players'][name]['coins'] -= val;
+    }
     update();
   }
 
@@ -97,6 +102,7 @@ class HostProvider
   handleAddPlayer(String name) {
     if (gameState['players'][name] == null) {
       gameState['players'][name] = {
+        'coins': 2,
         'a': deal(),
         'b': deal(),
       };

@@ -41,11 +41,13 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                   TextButton(
                     style: styles.ButtonStyles.glass,
                     onPressed: () {
-                      player.handleAddToTreasury(counter.count);
+                      player.handleAddToTreasury(player.name, counter.count);
                       counter.reset();
                     },
                     child: Text(
-                      'Add ${counter.count}',
+                      counter.count > 0
+                          ? 'Give ${counter.count}'
+                          : 'Take ${counter.count.abs()}',
                       style: styles.TextStyles.glass,
                     ),
                   ),
@@ -101,13 +103,19 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                       ),
                       Container(width: 15),
                       glass_icon_button.GlassIconButton(
-                        onPressed: () => counter.increment(1),
+                        onPressed: () {
+                          if (counter.count <
+                              player.gameState['players'][player.name]
+                                  ['coins']) {
+                            counter.increment(1);
+                          }
+                        },
                         iconData: Icons.arrow_upward,
                       )
                     ],
                   ),
                   Text(
-                    "${player.gameState['pot']}",
+                    "${player.gameState['players'][player.name]['coins']}",
                     style: styles.TextStyles.pot,
                   ),
                 ],
