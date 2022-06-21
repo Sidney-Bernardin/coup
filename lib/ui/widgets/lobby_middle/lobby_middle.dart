@@ -16,12 +16,13 @@ class LobbyMiddle extends StatefulWidget {
 class _LobbyMiddleState extends State<LobbyMiddle> {
   bool exchanging = false;
 
-  addToTreasury() {}
-
   @override
   Widget build(BuildContext context) {
-    final player = Provider.of<player_provider.PlayerProvider>(context);
     final counter = Provider.of<counter_provider.CounterProvider>(context);
+
+    final player = Provider.of<player_provider.PlayerProvider>(context);
+    int treasury = player.gameState['treasury'];
+    int coins = player.gameState['players'][player.name]['coins'];
 
     return Container(
       decoration: styles.ContainerDecorations.glass,
@@ -35,7 +36,7 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "${player.gameState['treasury']}",
+                    "$treasury",
                     style: styles.TextStyles.glass,
                   ),
                   TextButton(
@@ -103,19 +104,15 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                       ),
                       Container(width: 15),
                       glass_icon_button.GlassIconButton(
-                        onPressed: () {
-                          if (counter.count <
-                              player.gameState['players'][player.name]
-                                  ['coins']) {
-                            counter.increment(1);
-                          }
-                        },
+                        onPressed: () =>
+                            counter.count < coins ? counter.increment(1) : null,
                         iconData: Icons.arrow_upward,
                       )
                     ],
                   ),
                   Text(
-                    "${player.gameState['players'][player.name]['coins']}",
+                    //"${player.gameState['players'][player.name]['coins']}",
+                    '$coins',
                     style: styles.TextStyles.pot,
                   ),
                 ],
