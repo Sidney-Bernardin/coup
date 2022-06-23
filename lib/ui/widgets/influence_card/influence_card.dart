@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flip_card/flip_card.dart';
 
-import '../../../data/influence.dart' as influence;
+import '../../../data/influence_data.dart' as influence_data;
 
 class InfluenceCard extends StatelessWidget {
-  influence.Influence currentInfluence;
+  influence_data.InfluenceData influenceData;
 
-  InfluenceCard(this.currentInfluence, {Key? key}) : super(key: key);
+  InfluenceCard(this.influenceData, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class InfluenceCard extends StatelessWidget {
               border: Border.all(width: 5, color: Colors.black45),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
               image: DecorationImage(
-                image: AssetImage("assets/images/${currentInfluence.name}.png"),
+                image: AssetImage("assets/images/${influenceData.name}.png"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -41,7 +41,7 @@ class InfluenceCard extends StatelessWidget {
                     color: Colors.black45,
                   ),
                   child: Text(
-                    currentInfluence.nameUpper,
+                    influenceData.nameUpper,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -60,7 +60,7 @@ class InfluenceCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        currentInfluence.effect,
+                        influenceData.effect,
                         style: const TextStyle(
                           fontSize: 15,
                           fontFamily: 'SecularOne',
@@ -68,7 +68,7 @@ class InfluenceCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        currentInfluence.counteraction,
+                        influenceData.counteraction,
                         style: const TextStyle(
                           fontSize: 12.5,
                           fontFamily: 'SecularOne',

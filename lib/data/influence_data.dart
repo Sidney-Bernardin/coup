@@ -1,6 +1,6 @@
-enum Influence { ambassador, assassin, captain, contessa, duke }
+enum InfluenceData { ambassador, assassin, captain, contessa, duke }
 
-extension InfluenceExtension on Influence {
+extension InfluenceExtension on InfluenceData {
   String get name => [
         'ambassador',
         'assassin',

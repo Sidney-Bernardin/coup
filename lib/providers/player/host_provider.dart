@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
-import '../../data/influence.dart' as influence;
+import '../../data/influence_data.dart' as influence_data;
 import '../../data/models.dart' as models;
 
 import '../../repositories/ws_server/ws_server.dart' as ws_server;
@@ -28,7 +26,7 @@ class HostProvider
   ws_server.WebSocketServer webSocketServer = ws_server.WebSocketServer();
 
   HostProvider(this.name) {
-    for (final s in influence.Influence.values) {
+    for (final s in influence_data.InfluenceData.values) {
       gameState['court_deak'].add(s.index);
       gameState['court_deak'].add(s.index);
       gameState['court_deak'].add(s.index);
@@ -40,8 +38,22 @@ class HostProvider
   }
 
   @override
-  start() async {
-    webSocketServer.listenAndServe();
+  start(String ip, int port) async {
+    webSocketServer.listenAndServe(ip, port);
+    webSocketServer.payloadStream.stream.listen(_proccessPayload);
+  }
+
+  _proccessPayload(Map payload) {
+    models.PlayerToHost m = models.PlayerToHost.fromMap(payload);
+
+    switch (m.handler) {
+      case models.PlayerToHostHandler.introduce:
+        handleAddPlayer(m.name!);
+        break;
+      case models.PlayerToHostHandler.addToTreasury:
+        handleAddToTreasury(m.name!, m.addToTreasury!);
+        break;
+    }
   }
 
   @override

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/host_form/host_form.dart' as host_form;
+import '../../widgets/join_form/join_form.dart' as join_form;
 import '../../widgets/layout.dart' as layout;
-import '../../widgets/play_button/play_button.dart' as play_button;
+import '../../styles.dart' as styles;
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,25 +15,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.grey.shade800),
+        decoration: BoxDecoration(color: Colors.grey.shade700),
         child: layout.Layout(
-          left: play_button.PlayButton(
-            'Host Game',
-            onClick: () {
-              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
-                'is_host': true,
-              });
-            },
+          left: host_form.HostForm(),
+          right: join_form.JoinForm(),
+          middle: Container(
+            decoration: styles.ContainerDecorations.glass,
+            height: 174 * 1.7,
+            margin: const EdgeInsets.only(left: 10, right: 10),
           ),
-          right: play_button.PlayButton(
-            'Join Game',
-            onClick: () {
-              Navigator.pushReplacementNamed(context, '/lobby', arguments: {
-                'is_host': false,
-              });
-            },
-          ),
-          middle: const Card(),
         ),
       ),
     );

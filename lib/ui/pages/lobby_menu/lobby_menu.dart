@@ -1,91 +1,35 @@
 import 'package:flutter/material.dart';
 
-class LobbyMenu extends StatelessWidget {
-  const LobbyMenu({Key? key}) : super(key: key);
+import '../../styles.dart' as styles;
 
+class LobbyMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context)?.settings.arguments as Map;
-
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey.shade700,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Container(
-                  height: 174 * 1.7,
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 3,
-                      color: Colors.white10.withAlpha(80),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withAlpha(100),
-                        blurRadius: 10.0,
-                        spreadRadius: 0.0,
-                      ),
-                    ],
-                    color: Colors.white.withOpacity(0.2),
-                  ),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: args['players'].length,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    children: [
-                                      Icon(
-                                        Icons.person,
-                                        color: Colors.grey.shade200,
-                                      ),
-                                      Text(
-                                        'Player',
-                                        style: TextStyle(
-                                          color: Colors.grey.shade200,
-                                          fontSize: 20,
-                                          fontFamily: 'SecularOne',
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          style: const ButtonStyle(),
-                          child: const Text('Leave'),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+      backgroundColor: Colors.grey.shade700,
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Container(
+                decoration: styles.ContainerDecorations.glass,
+                height: 174 * 1.7,
+                margin: const EdgeInsets.only(left: 20, right: 10),
               ),
             ),
-            Expanded(
-              flex: 3,
-              child: Center(
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: Container(
+                decoration: styles.ContainerDecorations.glass,
+                height: 174 * 1.7,
+                margin: const EdgeInsets.only(left: 10, right: 20),
+                padding: const EdgeInsets.all(10),
                 child: Container(
-                  height: 174 * 1.7,
-                  margin: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     image: DecorationImage(
                       image: AssetImage('assets/images/rules.png'),
                       fit: BoxFit.fill,
@@ -94,8 +38,8 @@ class LobbyMenu extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Layout extends StatelessWidget {
+class MainLayout extends StatelessWidget {
   final Widget left;
   final Widget right;
   final Widget middle;
 
-  const Layout({
+  const MainLayout({
     Key? key,
     required this.left,
     required this.right,
@@ -19,7 +19,10 @@ class Layout extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Center(
-            child: left,
+            child: Container(
+              margin: const EdgeInsets.only(left: 20, right: 10),
+              child: left,
+            ),
           ),
         ),
         Expanded(

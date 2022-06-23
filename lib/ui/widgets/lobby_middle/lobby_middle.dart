@@ -27,6 +27,7 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
     return Container(
       decoration: styles.ContainerDecorations.glass,
       height: 174 * 1.7,
+      margin: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -102,7 +103,7 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                         onPressed: () => counter.decrement(1),
                         iconData: Icons.arrow_downward,
                       ),
-                      Container(width: 15),
+                      Container(width: 10),
                       glass_icon_button.GlassIconButton(
                         onPressed: () =>
                             counter.count < coins ? counter.increment(1) : null,
@@ -111,7 +112,6 @@ class _LobbyMiddleState extends State<LobbyMiddle> {
                     ],
                   ),
                   Text(
-                    //"${player.gameState['players'][player.name]['coins']}",
                     '$coins',
                     style: styles.TextStyles.pot,
                   ),

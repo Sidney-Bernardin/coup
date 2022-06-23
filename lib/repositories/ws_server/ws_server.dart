@@ -12,7 +12,7 @@ class WebSocketServer {
 
   final StreamController<Map> payloadStream = StreamController<Map>();
 
-  listenAndServe() async {
+  listenAndServe(String ip, int port) async {
     var handler = shelf_web_socket.webSocketHandler((ws) {
       if (!clientSockets.contains(ws)) {
         clientSockets.add(ws);
@@ -24,9 +24,7 @@ class WebSocketServer {
       });
     });
 
-    String? ip = await network_info_plus.NetworkInfo().getWifiIP();
-
-    shelf_io.serve(handler, ip!, 4040).then((srv) {
+    shelf_io.serve(handler, ip, port).then((srv) {
       print('Serving at ws://${srv.address.host}:${srv.port}');
     });
   }

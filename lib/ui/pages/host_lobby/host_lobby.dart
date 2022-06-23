@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/influence.dart' as influence;
+import '../../../data/influence_data.dart' as influence_data;
 
 import '../../../providers/player/player_provider.dart' as player_provider;
 import '../../../providers/player/host_provider.dart' as host_provider;
@@ -15,7 +15,12 @@ class HostLobby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     host_provider.HostProvider host = host_provider.HostProvider('HOST');
-    host.start();
+    host.start('10.10.10.117', 0);
+
+    influence_data.InfluenceData a = influence_data
+        .InfluenceData.values[host.gameState['players'][host.name]['a']];
+    influence_data.InfluenceData b = influence_data
+        .InfluenceData.values[host.gameState['players'][host.name]['b']];
 
     counter_provider.CounterProvider counter =
         counter_provider.CounterProvider();
@@ -38,16 +43,8 @@ class HostLobby extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Colors.grey.shade700,
             body: layout.Layout(
-              left: influence_card.InfluenceCard(
-                influence.Influence.values[
-                    Provider.of<player_provider.PlayerProvider>(context)
-                        .gameState["players"]["HOST"]["a"]],
-              ),
-              right: influence_card.InfluenceCard(
-                influence.Influence.values[
-                    Provider.of<player_provider.PlayerProvider>(context)
-                        .gameState["players"]["HOST"]["b"]],
-              ),
+              left: influence_card.InfluenceCard(a),
+              right: influence_card.InfluenceCard(b),
               middle: lobby_middle.LobbyMiddle(),
             ),
           ),

@@ -4,7 +4,7 @@ abstract class PlayerProvider with ChangeNotifier {
   late String name;
   late Map<dynamic, dynamic> gameState;
 
-  Future start();
+  Future start(String ip, int port);
 
   nextExchangeSet();
 
