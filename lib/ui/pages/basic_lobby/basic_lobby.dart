@@ -7,7 +7,7 @@ import '../../../providers/player/player_provider.dart' as player_provider;
 import '../../../providers/player/basic_provider.dart' as basic_provider;
 import '../../../providers/counter/counter_provider.dart' as counter_provider;
 
-import '../../widgets/layout.dart' as layout;
+import '../../widgets/main_layout.dart' as main_layout;
 import '../../widgets/influence_card/influence_card.dart' as influence_card;
 import '../../widgets/lobby_middle/lobby_middle.dart' as lobby_middle;
 
@@ -42,7 +42,7 @@ class BasicLobby extends StatelessWidget {
           },
           child: Scaffold(
             backgroundColor: Colors.grey.shade700,
-            body: layout.Layout(
+            body: main_layout.MainLayout(
               left: influence_card.InfluenceCard(a),
               right: influence_card.InfluenceCard(b),
               middle: lobby_middle.LobbyMiddle(),

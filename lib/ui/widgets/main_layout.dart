@@ -19,10 +19,7 @@ class MainLayout extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Center(
-            child: Container(
-              margin: const EdgeInsets.only(left: 20, right: 10),
-              child: left,
-            ),
+            child: left,
           ),
         ),
         Expanded(
